@@ -8,10 +8,6 @@ function getDetailId()
    return Path[Path.length - 1]
 }
 
-function editButton(id, name) {
-    $("#" + id).dblclick();
-}
-
 function copyText(inputId) {
     var copyText = document.getElementById(inputId);
     copyText.select();
@@ -171,24 +167,7 @@ function addDataTable(id, columnDefs, url, rowId, filters) { /*filters = [ { id,
                 return "req=" + JSON.stringify(d);
             }
         },
-        rowId: rowId,
-        language: {
-            "sProcessing": "Traitement en cours...",
-            "sSearch": "Rechercher&nbsp;:",
-            "sLengthMenu": "Afficher _MENU_ &eacute;l&eacute;ments",
-            "sInfo": "Affichage de l'&eacute;l&eacute;ment _START_ &agrave; _END_ sur _TOTAL_ &eacute;l&eacute;ments",
-            "sInfoEmpty": "Affichage de l'&eacute;l&eacute;ment 0 &agrave; 0 sur 0 &eacute;l&eacute;ment",
-            "sInfoFiltered": "(filtr&eacute; de _MAX_ &eacute;l&eacute;ments au total)",
-            "sInfoPostFix": "",
-            "sLoadingRecords": "Chargement en cours...",
-            "sZeroRecords": "Aucun &eacute;l&eacute;ment &agrave; afficher",
-            "sEmptyTable": "Aucune donn&eacute;e disponible dans le tableau",
-            "oPaginate": {
-                "sFirst": "Premier",
-                "sPrevious": "Pr&eacute;c&eacute;dent",
-                "sNext": "Suivant",
-                "sLast": "Dernier"
-            }
+        rowId: rowId
         },
         columnDefs: columnDefs,
         order: [
@@ -197,47 +176,7 @@ function addDataTable(id, columnDefs, url, rowId, filters) { /*filters = [ { id,
     });
 }
 
-function addClientSideDataTable(id, columnDefs, url, rowId) {
-    return $('#' + id).DataTable({
-        'searchable': true,
-        "ordering": true,
-        responsive: true,
-        processing: true,
-        //"dom": "<'row'<'col-sm-6'l><'col-sm-6'f>><'row'<'col-sm-12'tr>><'row'<'col-sm-5'i><'col-sm-7'p>>", // datatable layout
-        //"pagingType": "bootstrap_extended",
-        ajax: {
-            url: url,
-            type: "GET",
-            "dataSrc": function (d) {
-                return d
-            }
-        },
-        rowId: rowId,
-        language: {
-            "sProcessing": "Traitement en cours...",
-            "sSearch": "Rechercher&nbsp;:",
-            "sLengthMenu": "Afficher _MENU_ &eacute;l&eacute;ments",
-            "sInfo": "Affichage de l'&eacute;l&eacute;ment _START_ &agrave; _END_ sur _TOTAL_ &eacute;l&eacute;ments",
-            "sInfoEmpty": "Affichage de l'&eacute;l&eacute;ment 0 &agrave; 0 sur 0 &eacute;l&eacute;ment",
-            "sInfoFiltered": "(filtr&eacute; de _MAX_ &eacute;l&eacute;ments au total)",
-            "sInfoPostFix": "",
-            "sLoadingRecords": "Chargement en cours...",
-            "sZeroRecords": "Aucun &eacute;l&eacute;ment &agrave; afficher",
-            "sEmptyTable": "Aucune donn&eacute;e disponible dans le tableau",
-            "oPaginate": {
-                "sFirst": "Premier",
-                "sPrevious": "Pr&eacute;c&eacute;dent",
-                "sNext": "Suivant",
-                "sLast": "Dernier"
-            }
-        },
-        columnDefs: columnDefs,
-        order: [
-            [0, 'asc']
-        ]
-    });
-}
-
+//Use this to handle the costum filters in a dataTable
 
 function autoRenderDataTable(id, columnDefs, url, rowId, filters) {
     var selector = "";
@@ -252,27 +191,6 @@ function autoRenderDataTable(id, columnDefs, url, rowId, filters) {
     });
 }
 
-/**
- * This function will create a confirmation Modal and append it into the #ErrorModals section
- * @param {the id you wich to give to the modal} id
- * @param {the text that will be displayed} text
- */
-function BindConfirmationModal(id, text)
-{
-    var html = '<div class="modal fade" id="'+id+'">'
-             +'   <div class="modal-dialog" role= "document" >'
-             +'       <div class="modal-content">'
-             +'           <div class="modal-body">'
-             +'               <p>' +text+'</p>'
-             +'               <p>Veuillez confirmez votre choix :</p>'
-             +'               <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>'
-             +'               <button type="button" class="btn btn-success " id="confirm-' + id +'">Confirmer</button>'
-             +'           </div>'
-             +'        </div>'
-             +'   </div >'
-             +' </div>'
-    $('#ErrorModals').append(html)
-}
 /**
  * This function will check for you the inputs, to avoid using many scripts to check every single form, just use the tag REQUIRED and this
 * function will check if it's null or not and will display a message for the user, USE the function Send(ID, URL) if you want to use this
@@ -312,6 +230,10 @@ function deleteElement(elementId) {
     $('#' + elementId).remove()
 }
 
+/*
+* When you serializ a form it become like this : data=example&name=example&something=example
+* this method will turn that into a valid JsonString : "{'data':'example', 'name':example', 'something':'example'}"
+*/
 function FormToJsonString(form) {
     var o = {};
     var a = $(form).serializeArray();
